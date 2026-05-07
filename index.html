@@ -1,8 +1,53 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<style id="wy-preguard">html,body{visibility:hidden!important;background:#fff!important;}html.wy-ok,html.wy-ok body{visibility:visible!important;background:initial!important;}@media print{html,html *,body,body *{display:none!important;visibility:hidden!important;}@page{size:0 0;margin:0;}}</style>
-<meta name="wy-full-protection" content="v8custom-2">
+<style id="wy-preguard">html,html body{visibility:hidden!important;background:#fff!important;}html.wy-ok,html.wy-ok body{visibility:visible!important;background:initial!important;}@media print{html,html *,body,body *{display:none!important;visibility:hidden!important;}@page{size:0 0;margin:0;}}</style>
+<script id="wy-early-guard">
+(function(){
+  'use strict';
+  var ALLOWED_HOST = "weiwen0925.github.io";
+  var ALLOWED_PATH = "/dazhidulun-88/";
+  function _bad(){
+    if(location.protocol !== 'https:' && location.protocol !== 'http:') return true;
+    if(location.hostname !== ALLOWED_HOST) return true;
+    if((location.pathname || '/').indexOf(ALLOWED_PATH) !== 0) return true;
+    return false;
+  }
+  if(_bad()){
+    // 1) 立即上鎖：移除 wy-ok（saved DOM 可能含此 class）
+    document.documentElement.classList.remove('wy-ok');
+    // 2) 移除可能殘留的 inline style attribute
+    document.documentElement.removeAttribute('style');
+    if(document.body) document.body.removeAttribute('style');
+    // 3) 強制 visibility:hidden inline，優先級最高
+    document.documentElement.style.setProperty('visibility','hidden','important');
+    document.documentElement.style.setProperty('background','#fff','important');
+    // 4) 設置全局 kill switch，後續 _activate 直接放棄
+    window.__wyKilled = true;
+    // 5) DOMContentLoaded 後做最後一道清理：把 saved 過的 srcdoc / 解碼 text 也清掉
+    var _wipe = function(){
+      try{
+        // iframe 已被存了 srcdoc → 清掉，避免 child document 渲染
+        document.querySelectorAll('iframe').forEach(function(f){
+          f.removeAttribute('srcdoc');
+          f.removeAttribute('src');
+          f.setAttribute('data-wy-blocked','1');
+        });
+        // 任何 saved 的解碼後 text 元素：用 mark 追蹤的本來就有 data-wy-c/h，
+        // 但 saved DOM 的 data-wy-c 已被 remove → 元素變空白可見。為防萬一：
+        // 把 outer body 直接清空（已不可逆，因為 saved file 不再被信任）
+        if(document.body) document.body.innerHTML = '';
+      }catch(e){}
+    };
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', _wipe, {once:true, capture:true});
+    } else {
+      _wipe();
+    }
+  }
+})();
+</script>
+<meta name="wy-full-protection" content="v8custom-3">
 <meta name="robots" content="noai, noimageai, noarchive, nosnippet, noindex, nofollow">
 <meta name="googlebot" content="noai, noimageai, noarchive, nosnippet">
 <meta name="bingbot" content="noai, noimageai">
@@ -535,7 +580,8 @@ if(bt){
   }
 
   // 同步預檢：file://、不對的 hostname、自動化 → 直接放棄（preguard 永不移除）
-  if(!_hostOK() || _isAutomated()){ return; }
+  // 注意：__wyKilled 由 head 的 EARLY_GUARD_JS 在 origin 不通過時設置
+  if(window.__wyKilled || !_hostOK() || _isAutomated()){ return; }
 
   var __readyResolve;
   window.__wyReady = new Promise(function(res){ __readyResolve = res; });
@@ -655,12 +701,25 @@ if(bt){
   }
 
   function _activate(){
+    if(window.__wyKilled) return;
     try{
       _restoreIframes();
       _restoreText();
-      // 移除 preguard，讓頁面顯現
+      // 開啟顯示：用 inline style 而非單純 class，避免 saved DOM 帶 wy-ok 還能被解 hidden
       document.documentElement.classList.add('wy-ok');
+      document.documentElement.style.setProperty('visibility','visible','important');
       try{ window.dispatchEvent(new Event('wy-decoded')); }catch(e){}
+      // 訂閱 pageshow（從 bfcache 回來時）重新驗證
+      window.addEventListener('pageshow', function(ev){
+        if(ev.persisted){
+          // bfcache 回來 → 重新檢查
+          if(!_hostOK()){
+            document.documentElement.classList.remove('wy-ok');
+            document.documentElement.style.setProperty('visibility','hidden','important');
+            try{ document.body.innerHTML=''; }catch(e){}
+          }
+        }
+      });
     }catch(e){}
   }
   window.__wyReady.then(function(ok){ if(ok) _activate(); });
