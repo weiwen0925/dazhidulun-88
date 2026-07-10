@@ -541,7 +541,45 @@ var sres=sm.querySelector('#wysResults');
 /* 輸入框放同源 iframe:獨立 document,頁面防護層(全域鍵盤/選取攔截)完全不影響打字 */
 var ifr=sm.querySelector('.wysm-if'),idoc=ifr.contentDocument;
 idoc.open();
-idoc.write('<!DOCTYPE html><html><head><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet"><style>html,body{margin:0;padding:0;background:transparent;overflow:hidden;}input{width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:#f0e2c4;font-family:"Noto Serif TC",serif;font-size:18px;letter-spacing:2px;padding:10px 4px 12px;caret-color:#e3c085;border-bottom:1px solid rgba(217,184,124,.4);}input:focus{border-bottom-color:#d9b87c;}input::placeholder{color:#7a6a52;letter-spacing:2px;font-size:15px;}input::-webkit-search-cancel-button{-webkit-appearance:none;}</style></head><body><input id="q" type="search" autocomplete="off" placeholder="輸入關鍵詞，多詞可用空格分隔…"/></body></html>');
+idoc.write('<!DOCTYPE html><html><head><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet"><style>html,body{margin:0;padding:0;background:transparent;overflow:hidden;}input{width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:#f0e2c4;font-family:"Noto Serif TC",serif;font-size:18px;letter-spacing:2px;padding:10px 4px 12px;caret-color:#e3c085;border-bottom:1px solid rgba(217,184,124,.4);}input:focus{border-bottom-color:#d9b87c;}input::placeholder{color:#7a6a52;letter-spacing:2px;font-size:15px;}input::-webkit-search-cancel-button{-webkit-appearance:none;}</style></head><body><input id="q" type="search" autocomplete="off" placeholder="輸入關鍵詞，多詞可用空格分隔…"/><!--WY-C88TOC:BEGIN-->
+<style id="wy-c88toc-css">
+.toc-tbl88{position:absolute;left:16px;bottom:14px;z-index:3;display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:20px;cursor:pointer;background:linear-gradient(135deg,#8b5e3c,#a9803f);color:#fff;font-family:"Noto Sans TC",sans-serif;font-size:13px;letter-spacing:1px;font-weight:500;line-height:1.25;white-space:nowrap;box-shadow:0 2px 6px rgba(139,94,60,.35);border:1px solid rgba(255,255,255,.2);user-select:none;transition:filter .2s,transform .2s,box-shadow .2s;}
+.toc-tbl88:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(139,94,60,.5);}
+.toc-tbl88:focus-visible{outline:2px solid #d4a84b;outline-offset:2px;}
+.toc-tbl88 .tt-ic88{font-size:12px;line-height:1;}
+@media(max-width:520px){.toc-tbl88{padding:4px 10px;letter-spacing:.3px;left:12px;}}
+</style>
+<script id="wy-c88toc-js">(function(){
+function nOf(a){var m=(a.getAttribute('href')||'').match(/#chapter-(\d+)/);return m?m[1]:null;}
+function build(){
+  var links=document.querySelectorAll('a.toc-cardmain');
+  for(var i=0;i<links.length;i++){
+    var link=links[i], wrap=link.parentNode;
+    if(!wrap||wrap.querySelector('.toc-tbl88'))continue;
+    var n=nOf(link);if(!n)continue;
+    var tbl=document.createElement('span');tbl.className='toc-tbl88';tbl.setAttribute('data-tbl88',n);
+    tbl.setAttribute('role','button');tbl.setAttribute('tabindex','0');
+    tbl.setAttribute('aria-label','第'+n+'品 全景總表');tbl.title='本品全景總表';
+    tbl.innerHTML='<span class="tt-ic88">\u25a6</span>總表';
+    wrap.appendChild(tbl);
+  }
+}
+function openT(n){var m=document.getElementById('c88p'+n+'Modal');if(m){m.classList.add('open');}else{location.hash='#chapter-'+n;}}
+document.addEventListener('click',function(e){
+  var b=(e.target&&e.target.closest)?e.target.closest('.toc-tbl88'):null;if(!b)return;
+  e.preventDefault();e.stopPropagation();openT(b.getAttribute('data-tbl88'));
+},true);
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  var b=(e.target&&e.target.closest)?e.target.closest('.toc-tbl88'):null;if(!b)return;
+  e.preventDefault();openT(b.getAttribute('data-tbl88'));
+});
+build();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);
+var c=0,iv=setInterval(function(){build();if(++c>20)clearInterval(iv);},250);
+})();</script>
+<!--WY-C88TOC:END-->
+</body></html>');
 idoc.close();
 var sin=idoc.getElementById('q');
 
