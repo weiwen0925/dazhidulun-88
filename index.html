@@ -1614,4 +1614,54 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape")MODAL.classL
 upd();var c=0,iv=setInterval(function(){upd();if(++c>40)clearInterval(iv);},250);
 })();</script>
 <!--WY-BH88P5:END-->
+<!--WY-C88TOCBH:BEGIN-->
+<style id="wy-c88tocbh-css">
+.toc-bh88{position:absolute;bottom:14px;z-index:4;display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;cursor:pointer;background:linear-gradient(135deg,#4a5a68,#2b3742);color:#eef4fa;font-family:"Noto Sans TC",sans-serif;font-size:12px;letter-spacing:1px;font-weight:600;line-height:1.25;white-space:nowrap;box-shadow:0 1px 4px rgba(43,55,66,.4);border:1px solid rgba(180,205,225,.28);user-select:none;transition:filter .2s,transform .2s,box-shadow .2s;}
+.toc-bh88:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 4px 12px rgba(43,55,66,.5);}
+.toc-bh88:focus-visible{outline:2px solid #7f9cb5;outline-offset:2px;}
+.toc-bh88 .bh-ic88{font-size:11px;line-height:1;}
+@media(max-width:520px){.toc-bh88{padding:4px 10px;letter-spacing:.3px;font-size:11px;}}
+</style>
+<script id="wy-c88tocbh-js">(function(){
+function mkpill(n){
+  var bh=document.createElement('span');bh.className='toc-bh88';bh.setAttribute('data-bh',n);
+  bh.setAttribute('role','button');bh.setAttribute('tabindex','0');
+  bh.setAttribute('aria-label','第'+n+'品 白話翻譯表');bh.title='本品白話翻譯表';
+  bh.innerHTML='<span class="bh-ic88">\u8b6f</span>白話';
+  return bh;
+}
+function place(bh,tbl){
+  // 白話置於總表右側 8px（同為 .toc-card 內 absolute 子元素，offsetParent 相同）
+  var l=tbl.offsetLeft+tbl.offsetWidth+8;
+  bh.style.left=l+'px';
+}
+function build(){
+  var tbls=document.querySelectorAll('.toc-tbl88');
+  var did=0;
+  for(var i=0;i<tbls.length;i++){
+    var tbl=tbls[i];var card=tbl.parentNode;if(!card)continue;
+    var n=tbl.getAttribute('data-tbl88');if(!n)continue;
+    var bh=card.querySelector('.toc-bh88');
+    if(!bh){bh=mkpill(n);card.appendChild(bh);}
+    place(bh,tbl);
+    did++;
+  }
+  return did;
+}
+function openBH(n){var m=document.getElementById('bh88p'+n+'Modal');if(m){m.classList.add('open');}else{location.hash='#chapter-'+n;}}
+document.addEventListener('click',function(e){
+  var b=(e.target&&e.target.closest)?e.target.closest('.toc-bh88'):null;if(!b)return;
+  e.preventDefault();e.stopPropagation();openBH(b.getAttribute('data-bh'));
+},true);
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  var b=(e.target&&e.target.closest)?e.target.closest('.toc-bh88'):null;if(!b)return;
+  e.preventDefault();openBH(b.getAttribute('data-bh'));
+});
+build();
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build);
+window.addEventListener('resize',build);
+var c=0,iv=setInterval(function(){build();if(++c>40)clearInterval(iv);},250);
+})();</script>
+<!--WY-C88TOCBH:END-->
 </body></html>
